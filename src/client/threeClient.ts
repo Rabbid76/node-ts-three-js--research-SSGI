@@ -11,6 +11,7 @@ import {
     Scene,
     WebGLRenderer,
     FrontSide,
+    PointLight,
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
@@ -45,12 +46,17 @@ export const helloCube = (canvas: any) => {
     scene.background = new Color(0xc0c0c0);
     const pmremGenerator = new PMREMGenerator(renderer);
     const roomEnvironment = new RoomEnvironment();
-    const roomEnvironmentAmbientLight = new AmbientLight(0xffffff, 1);
+    const roomEnvironmentAmbientLight = new AmbientLight(0xffffff, 0.2);
     roomEnvironment.add(roomEnvironmentAmbientLight);
     const environmentTexture = pmremGenerator.fromScene(roomEnvironment, 0.04).texture;
-    scene.environment = environmentTexture;
+    //scene.environment = environmentTexture;
     //scene.background = environmentTexture;
     scene.background = new Color(0xffffff);
+
+    const pointLight = new PointLight(0xffffff, 100);
+    pointLight.position.set(0, 4, 0);
+    pointLight.castShadow = true;
+    scene.add(pointLight);
 
     //const gridHelper = new GridHelper(10, 10);
     //scene.add(gridHelper);
@@ -137,11 +143,11 @@ export const helloCube = (canvas: any) => {
     composer.addPass(velocityDepthNormalPass)
     const ssgiEffect = new SSGIEffect(scene, camera, velocityDepthNormalPass)
     const effectPass = new EffectPass(camera, ssgiEffect)
-
-composer.addPass(effectPass)
+    //composer.addPass(effectPass)
 
     const render = () => {
-        composer.render();
+        //composer.render();
+        renderer.render(scene, camera);
     }
     requestAnimationFrame(animate);
 }
