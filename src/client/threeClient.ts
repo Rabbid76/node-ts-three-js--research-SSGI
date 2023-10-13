@@ -19,6 +19,10 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 import Stats from 'three/examples/jsm/libs/stats.module' 
 import { GUI } from 'dat.gui'
 import { BloomEffect, EffectComposer, EffectPass, RenderPass } from "postprocessing";
+// @ts-ignore -- TS7016: Could not find declaration file
+import { SSGIEffect } from 'realism-effects/src/ssgi/SSGIEffect.js';
+// @ts-ignore -- TS7016: Could not find declaration file
+import { VelocityDepthNormalPass } from 'realism-effects/src/temporal-reproject/pass/VelocityDepthNormalPass.js';
 
 export const helloCube = (canvas: any) => {
     const renderer = new WebGLRenderer({canvas: canvas, antialias: true, alpha: true});
@@ -127,7 +131,14 @@ export const helloCube = (canvas: any) => {
 
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    composer.addPass(new EffectPass(camera, new BloomEffect()));
+    //composer.addPass(new EffectPass(camera, new BloomEffect()));
+
+    const velocityDepthNormalPass = new VelocityDepthNormalPass(scene, camera)
+    composer.addPass(velocityDepthNormalPass)
+    const ssgiEffect = new SSGIEffect(scene, camera, velocityDepthNormalPass)
+    const effectPass = new EffectPass(camera, ssgiEffect)
+
+composer.addPass(effectPass)
 
     const render = () => {
         composer.render();
