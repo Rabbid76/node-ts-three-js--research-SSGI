@@ -16,6 +16,7 @@ import {
     Scene,
     ShadowMaterial,
     WebGLRenderer,
+    FrontSide,
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
@@ -52,32 +53,42 @@ export const helloCube = (canvas: any) => {
     //scene.background = environmentTexture;
     scene.background = new Color(0xffffff);
 
-    const gridHelper = new GridHelper(10, 10);
-    scene.add(gridHelper);
-    const axesHelper = new AxesHelper(2);
-    scene.add(axesHelper);
-
-    const directionalLight = new DirectionalLight(0xffffff, 0.5);
-    directionalLight.position.set(1, 3, 1);
-    directionalLight.castShadow = true;
-    scene.add(directionalLight);
-    const lightTransformControl = new TransformControls(camera, renderer.domElement);
-    lightTransformControl.addEventListener( 'dragging-changed', (event: any) => {
-        controls.enabled = !event.value;
-    });
-    lightTransformControl.attach(directionalLight);
-    lightTransformControl.visible = false;
-    scene.add(lightTransformControl);
+    //const gridHelper = new GridHelper(10, 10);
+    //scene.add(gridHelper);
+    //const axesHelper = new AxesHelper(2);
+    //scene.add(axesHelper);
     
-    const groundGeometry = new PlaneGeometry(10, 10);
-    groundGeometry.rotateX(-Math.PI / 2);
-    const groundMaterial = new ShadowMaterial();
-    const groundMesh = new Mesh(groundGeometry, groundMaterial);
+    const groundMesh = new Mesh(new PlaneGeometry(10, 10), new MeshPhysicalMaterial({color: 0x808080, side:FrontSide}));
+    groundMesh.rotation.set(-Math.PI / 2, 0, 0);
     groundMesh.receiveShadow = true;
     scene.add(groundMesh);
 
+    const backMesh = new Mesh(new PlaneGeometry(5, 3), new MeshPhysicalMaterial({color: 0xffff00, side:FrontSide}));
+    backMesh.position.set(0, 1.5, -2.5);
+    backMesh.rotation.set(0, 0, 0);
+    backMesh.receiveShadow = true;
+    scene.add(backMesh);
+
+    const frontMesh = new Mesh(new PlaneGeometry(5, 3), new MeshPhysicalMaterial({color: 0x00ff00, side:FrontSide}));
+    frontMesh.position.set(0, 1.5, 2.5);
+    frontMesh.rotation.set(0, Math.PI, 0);
+    frontMesh.receiveShadow = true;
+    scene.add(frontMesh);
+
+    const leftMesh = new Mesh(new PlaneGeometry(5, 3), new MeshPhysicalMaterial({color: 0xff0000, side:FrontSide}));
+    leftMesh.position.set(-2.5, 1.5, 0);
+    leftMesh.rotation.set(0, Math.PI / 2, 0);
+    leftMesh.receiveShadow = true;
+    scene.add(leftMesh);
+
+    const rightMesh = new Mesh(new PlaneGeometry(5, 3), new MeshPhysicalMaterial({color: 0x000ff, side:FrontSide}));
+    rightMesh.position.set(2.5, 1.5, 0);
+    rightMesh.rotation.set(0, -Math.PI / 2, 0);
+    rightMesh.receiveShadow = true;
+    scene.add(rightMesh);
+
     const geometry = new BoxGeometry(1, 1, 1);
-    const material = new MeshPhysicalMaterial({color: 0xe02020});
+    const material = new MeshPhysicalMaterial({color: 0xc0c0c0});
     const mesh = new Mesh(geometry, material);
     mesh.castShadow = true;
     mesh.receiveShadow = true;
@@ -97,10 +108,8 @@ export const helloCube = (canvas: any) => {
     const gui = new GUI();
     const uiProperties = {
         'mesh transform control': meshTransformControl.visible,
-        'light transform control': lightTransformControl.visible,
     }
     gui.add(uiProperties, 'mesh transform control').onChange((value: any) => meshTransformControl.visible = value);
-    gui.add(uiProperties, 'light transform control').onChange((value: any) => lightTransformControl.visible = value);
 
     window.addEventListener('resize', () => {
         const width = window.innerWidth;
@@ -115,7 +124,7 @@ export const helloCube = (canvas: any) => {
         const deltaTimeMs = timestamp - (previousTimeStamp ?? timestamp);
         previousTimeStamp = timestamp;
         requestAnimationFrame(animate);
-        mesh.rotation.y += 45 * Math.PI / 180 * deltaTimeMs / 1000;
+        //mesh.rotation.y += 45 * Math.PI / 180 * deltaTimeMs / 1000;
         controls.update();
         render();
         stats.update()
