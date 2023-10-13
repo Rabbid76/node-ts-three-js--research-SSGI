@@ -57,37 +57,37 @@ export const helloCube = (canvas: any) => {
     //const axesHelper = new AxesHelper(2);
     //scene.add(axesHelper);
     
-    const groundMesh = new Mesh(new PlaneGeometry(10, 10), new MeshPhysicalMaterial({color: 0x808080, side:FrontSide}));
+    const groundMesh = new Mesh(new PlaneGeometry(10, 10), new MeshPhysicalMaterial({color: 0x808080, side:FrontSide, roughness: 0.5}));
     groundMesh.rotation.set(-Math.PI / 2, 0, 0);
     groundMesh.receiveShadow = true;
     scene.add(groundMesh);
 
-    const backMesh = new Mesh(new PlaneGeometry(5, 3), new MeshPhysicalMaterial({color: 0xffff00, side:FrontSide}));
+    const backMesh = new Mesh(new PlaneGeometry(5, 3), new MeshPhysicalMaterial({color: 0xffff00, side: FrontSide, roughness: 0.5}));
     backMesh.position.set(0, 1.5, -2.5);
     backMesh.rotation.set(0, 0, 0);
     backMesh.receiveShadow = true;
     scene.add(backMesh);
 
-    const frontMesh = new Mesh(new PlaneGeometry(5, 3), new MeshPhysicalMaterial({color: 0x00ff00, side:FrontSide}));
+    const frontMesh = new Mesh(new PlaneGeometry(5, 3), new MeshPhysicalMaterial({color: 0x00ff00, side:FrontSide, roughness: 0.5}));
     frontMesh.position.set(0, 1.5, 2.5);
     frontMesh.rotation.set(0, Math.PI, 0);
     frontMesh.receiveShadow = true;
     scene.add(frontMesh);
 
-    const leftMesh = new Mesh(new PlaneGeometry(5, 3), new MeshPhysicalMaterial({color: 0xff0000, side:FrontSide}));
+    const leftMesh = new Mesh(new PlaneGeometry(5, 3), new MeshPhysicalMaterial({color: 0xff0000, side:FrontSide, roughness: 0.5}));
     leftMesh.position.set(-2.5, 1.5, 0);
     leftMesh.rotation.set(0, Math.PI / 2, 0);
     leftMesh.receiveShadow = true;
     scene.add(leftMesh);
 
-    const rightMesh = new Mesh(new PlaneGeometry(5, 3), new MeshPhysicalMaterial({color: 0x000ff, side:FrontSide}));
+    const rightMesh = new Mesh(new PlaneGeometry(5, 3), new MeshPhysicalMaterial({color: 0x000ff, side:FrontSide, roughness: 0.5}));
     rightMesh.position.set(2.5, 1.5, 0);
     rightMesh.rotation.set(0, -Math.PI / 2, 0);
     rightMesh.receiveShadow = true;
     scene.add(rightMesh);
 
     const geometry = new BoxGeometry(1, 1, 1);
-    const material = new MeshPhysicalMaterial({color: 0xc0c0c0});
+    const material = new MeshPhysicalMaterial({color: 0xc0c0c0, roughness: 0.5});
     const mesh = new Mesh(geometry, material);
     mesh.castShadow = true;
     mesh.receiveShadow = true;
@@ -130,7 +130,7 @@ export const helloCube = (canvas: any) => {
     }
 
     const composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
+    //composer.addPass(new RenderPass(scene, camera));
     //composer.addPass(new EffectPass(camera, new BloomEffect()));
 
     const velocityDepthNormalPass = new VelocityDepthNormalPass(scene, camera)

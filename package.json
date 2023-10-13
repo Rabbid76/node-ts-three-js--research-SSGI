@@ -33,7 +33,7 @@
   "dependencies": {
     "express": "^4.18.2",
     "postprocessing":" ^6.33.2",
-    "realism-effects": "https://github.com/0beqz/realism-effects/tarball/7854d11d35ad838d5aa78edad75c5c6cd2b9ec4b",
+    "realism-effects": "https://github.com/0beqz/realism-effects/tarball/b9a496e3c5314885cb2e61d6d968854817758c01",
     "three": "^0.157.0"
   }
 }
