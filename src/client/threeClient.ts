@@ -19,7 +19,7 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 // @ts-ignore
 import Stats from 'three/examples/jsm/libs/stats.module' 
 import { GUI } from 'dat.gui'
-import { BloomEffect, EffectComposer, EffectPass, RenderPass } from "postprocessing";
+import { EffectComposer, EffectPass, RenderPass } from "postprocessing";
 // @ts-ignore -- TS7016: Could not find declaration file
 import { SSGIEffect } from 'realism-effects/src/ssgi/SSGIEffect.js';
 // @ts-ignore -- TS7016: Could not find declaration file
@@ -46,13 +46,15 @@ export const helloCube = (canvas: any) => {
     scene.background = new Color(0xc0c0c0);
     const pmremGenerator = new PMREMGenerator(renderer);
     const roomEnvironment = new RoomEnvironment();
-    const roomEnvironmentAmbientLight = new AmbientLight(0xffffff, 0.2);
+    const roomEnvironmentAmbientLight = new AmbientLight(0xffffff, 20.0);
     roomEnvironment.add(roomEnvironmentAmbientLight);
     const environmentTexture = pmremGenerator.fromScene(roomEnvironment, 0.04).texture;
-    //scene.environment = environmentTexture;
+    scene.environment = environmentTexture;
     //scene.background = environmentTexture;
     scene.background = new Color(0xffffff);
 
+    const ambientLight = new AmbientLight(0xffffff, 0.2);
+    //scene.add(ambientLight);
     const pointLight = new PointLight(0xffffff, 100);
     pointLight.position.set(0, 4, 0);
     pointLight.castShadow = true;
@@ -137,17 +139,16 @@ export const helloCube = (canvas: any) => {
 
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    //composer.addPass(new EffectPass(camera, new BloomEffect()));
-
+    
     const velocityDepthNormalPass = new VelocityDepthNormalPass(scene, camera)
     composer.addPass(velocityDepthNormalPass)
     const ssgiEffect = new SSGIEffect(scene, camera, velocityDepthNormalPass)
     const effectPass = new EffectPass(camera, ssgiEffect)
-    //composer.addPass(effectPass)
+    composer.addPass(effectPass)
 
     const render = () => {
-        //composer.render();
-        renderer.render(scene, camera);
+        //renderer.render(scene, camera);
+        composer.render();
     }
     requestAnimationFrame(animate);
 }
