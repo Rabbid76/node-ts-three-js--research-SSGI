@@ -1,12 +1,7 @@
 import {
-    ACESFilmicToneMapping,
     AmbientLight,
-    AxesHelper,
     BoxGeometry,
     Color,
-    DirectionalLight,
-    GridHelper,
-    LinearEncoding,
     Mesh,
     MeshPhysicalMaterial,
     PerspectiveCamera,
@@ -14,7 +9,6 @@ import {
     PlaneGeometry,
     PMREMGenerator,
     Scene,
-    ShadowMaterial,
     WebGLRenderer,
     FrontSide,
 } from 'three';
@@ -24,6 +18,7 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 // @ts-ignore
 import Stats from 'three/examples/jsm/libs/stats.module' 
 import { GUI } from 'dat.gui'
+import { BloomEffect, EffectComposer, EffectPass, RenderPass } from "postprocessing";
 
 export const helloCube = (canvas: any) => {
     const renderer = new WebGLRenderer({canvas: canvas, antialias: true, alpha: true});
@@ -130,8 +125,12 @@ export const helloCube = (canvas: any) => {
         stats.update()
     }
 
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    composer.addPass(new EffectPass(camera, new BloomEffect()));
+
     const render = () => {
-        renderer.render(scene, camera);
+        composer.render();
     }
     requestAnimationFrame(animate);
 }
