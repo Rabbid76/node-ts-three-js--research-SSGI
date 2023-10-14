@@ -16,7 +16,6 @@ import {
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 // @ts-ignore
 import Stats from 'three/examples/jsm/libs/stats.module' 
@@ -37,10 +36,7 @@ export const helloCube = (canvas: any) => {
     renderer.shadowMap.type = PCFSoftShadowMap;
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
-    //renderer.toneMapping = NoToneMapping;
-    //renderer.outputEncoding = sRGBEncoding;
-    //renderer.toneMapping = ACESFilmicToneMapping;
-
+    
     const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.y = 4;
     camera.position.z = 8;
@@ -48,14 +44,7 @@ export const helloCube = (canvas: any) => {
 
     const scene = new Scene();
     scene.background = new Color(0xc0c0c0);
-    //const pmremGenerator = new PMREMGenerator(renderer);
-    //const roomEnvironment = new RoomEnvironment();
-    //const roomEnvironmentAmbientLight = new AmbientLight(0xffffff, 20.0);
-    //roomEnvironment.add(roomEnvironmentAmbientLight);
-    //const environmentTexture = pmremGenerator.fromScene(roomEnvironment, 0.04).texture;
-    
-    //scene.environment = environmentTexture;
-    //scene.background = environmentTexture;
+     
     scene.background = new Color(0xffffff);
     const rgbeLoader = new RGBELoader();
     rgbeLoader.load(EnvironmentMapResource, (texture: Texture, _textureData: any) => {
