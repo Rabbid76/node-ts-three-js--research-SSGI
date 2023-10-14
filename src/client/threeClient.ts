@@ -9,6 +9,7 @@ import {
     PlaneGeometry,
     PMREMGenerator,
     Scene,
+    Texture,
     WebGLRenderer,
     FrontSide,
     PointLight,
@@ -16,6 +17,7 @@ import {
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 // @ts-ignore
 import Stats from 'three/examples/jsm/libs/stats.module' 
 import { GUI } from 'dat.gui'
@@ -24,6 +26,7 @@ import { EffectComposer, EffectPass, RenderPass } from "postprocessing";
 import { SSGIEffect } from 'realism-effects/src/ssgi/SSGIEffect.js';
 // @ts-ignore -- TS7016: Could not find declaration file
 import { VelocityDepthNormalPass } from 'realism-effects/src/temporal-reproject/pass/VelocityDepthNormalPass.js';
+import EnvironmentMapResource from './../../resource/rooitou_park_1k.hdr'
 
 export const helloCube = (canvas: any) => {
     const renderer = new WebGLRenderer({canvas: canvas, antialias: true, alpha: true});
@@ -44,21 +47,27 @@ export const helloCube = (canvas: any) => {
 
     const scene = new Scene();
     scene.background = new Color(0xc0c0c0);
-    const pmremGenerator = new PMREMGenerator(renderer);
-    const roomEnvironment = new RoomEnvironment();
-    const roomEnvironmentAmbientLight = new AmbientLight(0xffffff, 20.0);
-    roomEnvironment.add(roomEnvironmentAmbientLight);
-    const environmentTexture = pmremGenerator.fromScene(roomEnvironment, 0.04).texture;
-    scene.environment = environmentTexture;
+    //const pmremGenerator = new PMREMGenerator(renderer);
+    //const roomEnvironment = new RoomEnvironment();
+    //const roomEnvironmentAmbientLight = new AmbientLight(0xffffff, 20.0);
+    //roomEnvironment.add(roomEnvironmentAmbientLight);
+    //const environmentTexture = pmremGenerator.fromScene(roomEnvironment, 0.04).texture;
+    
+    //scene.environment = environmentTexture;
     //scene.background = environmentTexture;
     scene.background = new Color(0xffffff);
+    const rgbeLoader = new RGBELoader();
+    rgbeLoader.load(EnvironmentMapResource, (texture: Texture, _textureData: any) => {
+        scene.environment = texture;
+        scene.background = texture;
+    });
 
-    const ambientLight = new AmbientLight(0xffffff, 0.2);
+    //const ambientLight = new AmbientLight(0xffffff, 0.2);
     //scene.add(ambientLight);
-    const pointLight = new PointLight(0xffffff, 100);
-    pointLight.position.set(0, 4, 0);
-    pointLight.castShadow = true;
-    scene.add(pointLight);
+    //const pointLight = new PointLight(0xffffff, 100);
+    //pointLight.position.set(0, 4, 0);
+    //pointLight.castShadow = true;
+    //scene.add(pointLight);
 
     //const gridHelper = new GridHelper(10, 10);
     //scene.add(gridHelper);

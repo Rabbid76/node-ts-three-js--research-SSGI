@@ -10,7 +10,7 @@ module.exports = {
                 exclude: /node_modules/,
             },
             {
-                test: /\.(png|svg|jpg|jpeg|gif|envmap)$/i,
+                test: /\.(png|svg|jpg|jpeg|gif|envmap|hdr)$/i,
                 type: 'asset/resource',
             },
             {
