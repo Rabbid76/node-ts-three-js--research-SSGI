@@ -26,6 +26,7 @@ import { EffectComposer, EffectPass, RenderPass } from "postprocessing";
 import { SSGIEffect } from 'realism-effects/src/ssgi/SSGIEffect.js';
 // @ts-ignore -- TS7016: Could not find declaration file
 import { VelocityDepthNormalPass } from 'realism-effects/src/temporal-reproject/pass/VelocityDepthNormalPass.js';
+// @ts-ignore -- TS7016: Could not find declaration file
 import EnvironmentMapResource from './../../resource/rooitou_park_1k.hdr'
 
 export const helloCube = (canvas: any) => {
